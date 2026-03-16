@@ -7,3 +7,4 @@ anthropic
 duckduckgo-search
 requests
 beautifulsoup4
+yt-dlp
