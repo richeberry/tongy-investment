@@ -8,6 +8,7 @@ from duckduckgo_search import DDGS
 import requests
 from bs4 import BeautifulSoup
 import subprocess
+import sys
 import tempfile
 import re
 import os
@@ -1005,7 +1006,7 @@ TRUSTED_CHANNELS = [
 
 def check_ytdlp() -> bool:
     try:
-        subprocess.run(["yt-dlp", "--version"], capture_output=True, check=True)
+        subprocess.run([sys.executable, "-m", "yt_dlp", "--version"], capture_output=True, check=True)
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
@@ -1061,7 +1062,7 @@ def search_yt_videos(query: str, limit: int = 5) -> list[dict]:
 
     for q in queries:
         cmd = [
-            "yt-dlp",
+            sys.executable, "-m", "yt_dlp",
             "--print", "%(id)s\t%(title)s\t%(channel)s\t%(view_count)s\t%(upload_date)s",
             "--no-download",
             f"ytsearch30:{q}",
@@ -1091,7 +1092,7 @@ def get_transcript(url: str, video_id: str) -> str:
         # 1단계: 기존 자막 시도
         for lang in ["ko", "en"]:
             cmd = [
-                "yt-dlp",
+                sys.executable, "-m", "yt_dlp",
                 "--write-auto-sub", "--write-sub",
                 "--sub-lang", lang,
                 "--sub-format", "vtt",
@@ -1107,7 +1108,7 @@ def get_transcript(url: str, video_id: str) -> str:
         # 2단계: 자막 없으면 오디오 다운 → Whisper STT
         audio_output = f"{tmpdir}/{video_id}"
         cmd = [
-            "yt-dlp",
+            sys.executable, "-m", "yt_dlp",
             "-x", "--audio-format", "mp3",
             "--audio-quality", "5",
             "--no-playlist",
