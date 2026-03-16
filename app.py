@@ -25,6 +25,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# 비밀번호 인증
+_correct_pw = st.secrets.get("APP_PASSWORD", "")
+if _correct_pw:
+    _pw = st.text_input("비밀번호를 입력하세요", type="password")
+    if _pw != _correct_pw:
+        st.stop()
+
 st.markdown("""
 <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
