@@ -27,7 +27,11 @@ st.set_page_config(
 )
 
 # 비밀번호 인증
-_correct_pw = st.secrets.get("APP_PASSWORD", "")
+try:
+    _correct_pw = st.secrets["APP_PASSWORD"]
+except Exception:
+    _correct_pw = os.environ.get("APP_PASSWORD", "")
+
 if _correct_pw:
     _pw = st.text_input("비밀번호를 입력하세요", type="password")
     if _pw != _correct_pw:
@@ -1641,7 +1645,7 @@ with tab3:
     st.caption("yt-dlp로 자막 수집 → Claude 투자 인사이트 분석")
 
     if not check_ytdlp():
-        st.error("yt-dlp가 설치되어 있지 않습니다. `brew install yt-dlp` 후 다시 시도하세요.")
+        st.error("yt-dlp를 불러올 수 없습니다. 잠시 후 다시 시도하세요.")
     else:
         # 모드 선택
         mode = st.radio("모드 선택", ["🔗 URL 직접 입력", "🔍 키워드 검색"], horizontal=True)
