@@ -1,0 +1,9 @@
+streamlit
+yfinance
+pandas
+ta
+plotly
+anthropic
+duckduckgo-search
+requests
+beautifulsoup4
